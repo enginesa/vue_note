@@ -32,9 +32,14 @@ nav{
     font-weight: 300;
 }
 
-.hero{
+.heroHome{
     margin-top: 60px;
 }
-.level{
+.levelHome{
     margin-top: 120px;
+}
+
+.formBox{
+    max-width: 500px;
+
 }

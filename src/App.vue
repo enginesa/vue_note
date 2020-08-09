@@ -1,21 +1,20 @@
 <template>
     <div id="app">
+        <Navbar></Navbar>
 
-        <Home></Home>
-
-
-
+        <router-view></router-view>
 
     </div>
 </template>
 
 
 <script>
-    import Home from './views/Home';
+    import Navbar from '../src/components/shared/Navbar';
+
 
     export default {
         components: {
-            Home
+            Navbar
         }
     }
 </script>
