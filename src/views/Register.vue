@@ -12,12 +12,6 @@
                 </h2>
 
                 <div class="field">
-                    <label class="label">Ad</label>
-                    <div class="control">
-                        <input class="input" type="text" placeholder="Ad">
-                    </div>
-                </div>
-                <div class="field">
                     <label class="label">E-posta</label>
                     <div class="control">
                         <input class="input" type="text" placeholder="E-posta">
@@ -42,18 +36,6 @@
                         <label class="checkbox">
                             <input type="checkbox">
                             Site için geçerli <a href="#">şartları ve koşulları</a> kabul ediyorum.
-                        </label>
-                    </div>
-                </div>
-                <div class="field">
-                    <div class="control">
-                        <label class="radio">
-                            <input type="radio" name="question">
-                            Yes
-                        </label>
-                        <label class="radio">
-                            <input type="radio" name="question">
-                            No
                         </label>
                     </div>
                 </div>
