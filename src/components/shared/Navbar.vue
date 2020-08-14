@@ -4,8 +4,6 @@
             <router-link :to='{name:"Home"}' class="navbar-item">
                 <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
             </router-link>
-
-
             <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
                data-target="navbarBasicExample">
                 <span aria-hidden="true"></span>
@@ -13,15 +11,13 @@
                 <span aria-hidden="true"></span>
             </a>
         </div>
-
         <div id="navbarBasicExample" class="navbar-menu">
-
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
-                        <router-link :to='{name:"Register"}' class="button is-primary"><strong>Kayıt ol</strong></router-link>
+                        <router-link :to='{name:"Register"}' class="button is-primary"><strong>Kayıt ol</strong>
+                        </router-link>
                         <router-link :to='{name:"Login"}' class="button is-light">Giriş yap</router-link>
-
                     </div>
                 </div>
             </div>
@@ -45,7 +41,7 @@
 </script>
 
 <style scoped>
-    nav{
+    nav {
         margin-bottom: 30px;
     }
 </style>

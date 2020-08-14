@@ -3,14 +3,15 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+import state from "./state";
+import getters from "./getters";
+import mutations from "./mutations";
 import actions from "./actions";
 
 const store = new Vuex.Store({
-    state: {
-        apikey: "AIzaSyAXhrsyMdcO4ZvED0fcn1yiLTAXhkATBpE"
-    },
-    getters: {},
-    mutations: {},
+    state,
+    getters,
+    mutations,
     actions
 })
 
