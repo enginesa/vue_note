@@ -2,25 +2,23 @@ import axios from 'axios';
 import router from '../router/index';
 
 export default {
-    initApp({state, dispatch}) {
+    initApp({commit, dispatch}) {
         var token = localStorage.getItem("token");
         var tokenExpires = localStorage.getItem("tokenExpires");
 
         if (token && tokenExpires) {
-            state.tokenId = token;
-            router.push({name: "Notes"});
-
 
             var nowDate = new Date(Date.now());
             var finishDate = new Date(tokenExpires);
 
 
             if (finishDate > nowDate) {
-                // var remainingTime = 2000;
-                var remainingTime = finishDate-nowDate;
+                var remainingTime = finishDate - nowDate;
                 dispatch("timeOut", remainingTime);
+                commit("setToken", token)
+                commit("setAuthenticated", true)
 
-            }else{
+            } else {
                 dispatch("logOut");
                 router.push({"name": "Home"});
             }
@@ -36,6 +34,7 @@ export default {
                 var expiresIn = response.data.expiresIn;
 
                 commit("setToken", token)
+                commit("setAuthenticated", true)
                 dispatch("setAuthLocalStorage", {
                     "token": token,
                     "expiresIn": expiresIn,
@@ -57,6 +56,8 @@ export default {
 
 
                 commit("setToken", token)
+                commit("setAuthenticated", true)
+
                 dispatch("setAuthLocalStorage", {
                     "token": token,
                     "expiresIn": expiresIn,
@@ -82,6 +83,8 @@ export default {
         localStorage.removeItem("token");
         localStorage.removeItem("tokenExpires");
         commit("setToken", "")
+        commit("setAuthenticated", false)
+
     },
 
     timeOut({dispatch}, time) {

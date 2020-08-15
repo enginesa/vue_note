@@ -15,9 +15,9 @@
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
-                        <router-link :to='{name:"Register"}' class="button is-primary"><strong>Kayıt ol</strong>
-                        </router-link>
-                        <router-link :to='{name:"Login"}' class="button is-light">Giriş yap</router-link>
+                        <router-link :to='{name:"NewNote"}' class="button is-danger" v-if="authControl"><strong>Yeni not</strong></router-link>
+                        <router-link :to='{name:"Register"}' class="button is-primary" v-if="!authControl"><strong>Kayıt ol</strong></router-link>
+                        <router-link :to='{name:"Login"}' class="button is-light" v-if="!authControl">Giriş yap</router-link>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,12 @@
                 $(".navbar-menu").toggleClass("is-active");
 
             });
-        }
+        },
+       computed:{
+            authControl(){
+                return this.$store.getters.getToken;
+            }
+       }
     }
 </script>
 
