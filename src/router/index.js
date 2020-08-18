@@ -5,7 +5,6 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 
-
 const router = new VueRouter({
     mode: "history",
     routes: [
@@ -35,13 +34,29 @@ const router = new VueRouter({
             name: 'Notes',
             component: () => import( '../views/Notes'),
             meta: {requiresAuth: true},
-        }, {
+        },
+        {
+            path: '/notes/detail/:id',
+            name: 'Detail',
+            component: () => import( '../views/Detail'),
+            meta: {requiresAuth: true},
+
+        },
+        {
+            path: '/notes/detail/:id/edit',
+            name: 'Edit',
+            component: () => import( '../views/Edit'),
+            meta: {requiresAuth: true},
+
+        },
+        {
             path: '/new-note',
             name: 'NewNote',
             component: () => import( '../views/NewNote'),
             meta: {requiresAuth: true},
 
         },
+
         {path: '*', redirect: {name: "Home"}}
     ]
 })
@@ -52,23 +67,23 @@ router.beforeEach((to, from, next) => {
     //bizde asny yaptık
     setTimeout(function () {
         var authControl = to.meta.requiresAuth;
-        var token=store.getters.getToken;
+        var token = store.getters.getToken;
 //token varsa
         if (token) {
-            if(authControl){
+            if (authControl) {
                 next();
             }
             //auth olup auth dışı yere giriyorsa notesa atsın
-            else{
-                next({name:"Notes"});
+            else {
+                next({name: "Notes"});
             }
         }
         //token yoksa
-        else{
+        else {
             //auth işlemli yere giriyorsa kayıt sayfasına
-            if(authControl){
-                next({name:"Register"});
-            }else{
+            if (authControl) {
+                next({name: "Register"});
+            } else {
                 next();
             }
 

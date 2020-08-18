@@ -2,21 +2,25 @@
     <div class="card">
         <header class="card-header">
             <p class="card-header-title">
-                Component
+                {{item.header}}
             </p>
 
         </header>
         <div class="card-content">
             <div class="content">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-                <a href="#">@bulmaio</a>. <a href="#">#css</a> <a href="#">#responsive</a>
-                <br>
-                <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                {{item.content | maxLength}}
             </div>
         </div>
         <footer class="card-footer">
-            <a href="#" class="card-footer-item">Düzenle</a>
-            <a href="#" class="card-footer-item">Sil</a>
+<!--            <a href="#" class="card-footer-item">Aç</a>-->
+            <router-link :to="{ name: 'Detail', params: { id: item.id } }" class="card-footer-item">Aç</router-link>
         </footer>
     </div>
 </template>
+
+<script>
+    export default {
+        props:["item"],
+
+    }
+</script>
