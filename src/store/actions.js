@@ -2,25 +2,26 @@ import axios from 'axios';
 import router from '../router/index';
 
 export default {
-    initApp({state, dispatch}) {
+    initApp({commit, dispatch}) {
         var token = localStorage.getItem("token");
         var tokenExpires = localStorage.getItem("tokenExpires");
+        var userId = localStorage.getItem("userId");
 
-        if (token && tokenExpires) {
-            state.tokenId = token;
-            router.push({name: "Notes"});
-
+        if (token && tokenExpires && userId) {
 
             var nowDate = new Date(Date.now());
             var finishDate = new Date(tokenExpires);
 
 
             if (finishDate > nowDate) {
-                // var remainingTime = 2000;
-                var remainingTime = finishDate-nowDate;
+                var remainingTime = finishDate - nowDate;
                 dispatch("timeOut", remainingTime);
+                commit("setToken", token)
+                commit("setUserId", userId)
 
-            }else{
+                commit("setAuthenticated", true)
+
+            } else {
                 dispatch("logOut");
                 router.push({"name": "Home"});
             }
@@ -34,11 +35,15 @@ export default {
             .then(function (response) {
                 var token = response.data.idToken;
                 var expiresIn = response.data.expiresIn;
+                var userId = response.data.localId;
 
                 commit("setToken", token)
+                commit("setUserId", userId)
+                commit("setAuthenticated", true)
                 dispatch("setAuthLocalStorage", {
                     "token": token,
                     "expiresIn": expiresIn,
+                    "userId": userId
                 })
                 dispatch("timeOut", expiresIn * 1000)
                 return [true, response];
@@ -54,12 +59,17 @@ export default {
             .then(function (response) {
                 var token = response.data.idToken;
                 var expiresIn = response.data.expiresIn;
+                var userId = response.data.localId;
 
 
                 commit("setToken", token)
+                commit("setUserId", userId)
+                commit("setAuthenticated", true)
+
                 dispatch("setAuthLocalStorage", {
                     "token": token,
                     "expiresIn": expiresIn,
+                    "userId": userId
                 })
                 dispatch("timeOut", expiresIn * 1000)
                 return [true, response];
@@ -69,9 +79,9 @@ export default {
             })
     },
 
-
     setAuthLocalStorage(_, payLoad) {
         localStorage.setItem("token", payLoad["token"]);
+        localStorage.setItem("userId", payLoad["userId"]);
         var expiresDate = new Date(Date.now() + payLoad["expiresIn"] * 1000);
         localStorage.setItem("tokenExpires", expiresDate);
 
@@ -81,7 +91,11 @@ export default {
     logOut({commit}) {
         localStorage.removeItem("token");
         localStorage.removeItem("tokenExpires");
+        localStorage.removeItem("userId");
         commit("setToken", "")
+        commit("setAuthenticated", false)
+        commit("setUserId", "")
+
     },
 
     timeOut({dispatch}, time) {
@@ -89,6 +103,71 @@ export default {
             dispatch("logOut");
             router.push({"name": "Home"});
         }, time)
+    },
+
+    //NewNote
+    newNote({state}, form) {
+        var data = {header: form.header, content: form.content};
+        axios.post(`https://note-33f3e.firebaseio.com/notes/${state.userId}.json`,
+            data)
+            .then(function (response) {
+                if (response) {
+                    router.push({name: "Notes"})
+                }
+
+            })
+    },
+    //*NewNote
+    //Notes
+    listNotes({state, commit}) {
+        axios.get(`https://note-33f3e.firebaseio.com/notes/${state.userId}.json`)
+            .then(function (response) {
+                if (response.data) {
+
+                    var responseData = [];
+                    for (var dataKey in response.data) {
+                        response.data[dataKey]["id"] = dataKey;
+                        responseData.push(response.data[dataKey]);
+                    }
+
+                    commit("setNotes", responseData);
+
+                }
+            })
+
+    },
+    //*Notes
+
+    //Detail
+    noteDetail({state}, noteId) {
+        return new axios.get(`https://note-33f3e.firebaseio.com/notes/${state.userId}/${noteId}.json`)
+            .then(function (response) {
+                if (response) {
+                    return response.data;
+                }
+            })
+    },
+    //*Detail
+
+    editNote({state}, form) {
+        var data = {header: form.header, content: form.content};
+        return new axios.put(`https://note-33f3e.firebaseio.com/notes/${state.userId}/${form.id}.json`,
+            data)
+            .then(function (response) {
+                if (response.status === 200) {
+                    return response
+                }
+
+            })
+    },
+    deleteNote({state},noteId){
+        return new axios.delete(`https://note-33f3e.firebaseio.com/notes/${state.userId}/${noteId}.json`)
+            .then(function (response) {
+                if (response.status === 200) {
+                    return response
+                }
+            })
     }
+
 }
 
