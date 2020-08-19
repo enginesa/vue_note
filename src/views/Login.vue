@@ -9,9 +9,6 @@
                 <h2 class="subtitle">
                     Devam edebilmek için giriş yapın.
                 </h2>
-                engin1218@hotmail.com
-
-
                 <div class="field">
                     <label class="label">E-posta</label>
                     <div class="control">

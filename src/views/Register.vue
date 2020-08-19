@@ -10,7 +10,6 @@
                 <h2 class="subtitle">
                     Hemen notlarını oluşturmaya başla.
                 </h2>
-                <p>engin1218@hotmail.com</p>
                 <div class="field">
                     <label class="label">E-posta</label>
                     <div class="control">
